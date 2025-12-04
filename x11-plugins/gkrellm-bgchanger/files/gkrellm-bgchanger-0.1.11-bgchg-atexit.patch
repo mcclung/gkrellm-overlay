@@ -1,0 +1,14 @@
+diff '--color=auto' -u --recursive gkrellmbgchg2-0.1.11_orig/gkrellmbgchg.c gkrellmbgchg2-0.1.11/gkrellmbgchg.c
+--- gkrellmbgchg2-0.1.11_orig/gkrellmbgchg.c	2010-12-22 08:46:07.000000000 -0500
++++ gkrellmbgchg2-0.1.11/gkrellmbgchg.c	2025-12-03 23:21:25.905657162 -0500
+@@ -1159,7 +1159,10 @@
+ 	callbacks = calls;
+ #endif
+ 
++#pragma GCC diagnostic push
++#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+ 	g_atexit( bgchg_atexit );
++#pragma GCC diagnostic pop
+ 
+ 	pGK = gkrellm_ticks();
+ 	style_id = gkrellm_add_meter_style( &plugin_mon, STYLE_NAME );

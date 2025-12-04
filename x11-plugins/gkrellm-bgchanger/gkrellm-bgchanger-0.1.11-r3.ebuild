@@ -21,7 +21,10 @@ RDEPEND="app-admin/gkrellm:2[X]"
 DEPEND="${RDEPEND}"
 BDEPEND="virtual/pkgconfig"
 
-PATCHES=( "${FILESDIR}"/${PN}-0.1.11-fix-build-system.patch )
+PATCHES=( 
+	"${FILESDIR}"/${PN}-0.1.11-fix-build-system.patch
+	"${FILESDIR}"/${PN}-0.1.11-bgchg-atexit.patch
+)
 
 PLUGIN_DOCS=( bgchg_info.sh kdewallpaper.sh )
 
