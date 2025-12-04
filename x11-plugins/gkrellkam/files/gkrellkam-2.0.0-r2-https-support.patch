@@ -1,0 +1,61 @@
+Subject: Support https URLs
+Author: Christoph Biedl <debian.axhn@manchmal.in-ulm.de>
+Last-Update: 2022-01-05
+
+--- a/gkrellkam-list.5
++++ b/gkrellkam-list.5
+@@ -16,7 +16,7 @@
+ Sources of type \fIimage\fP consist of a complete local filename to an
+ image file.
+ .IP \fIurl\fP
+-Type \fIurl\fP is just that; a ftp:// or http:// URL pointing at an online
++Type \fIurl\fP is just that; a ftp:// or http:// or https:// URL pointing at an online
+ image file.
+ .IP \fIscript\fP
+ Type \fIscript\fP is a system command, executed in a shell by GKrellKam
+--- a/gkrellkam2.c
++++ b/gkrellkam2.c
+@@ -76,7 +76,7 @@
+ 
+ "Just put the address of a webcam image in the Image Source\n",
+ "box on the configuration tab for one of the panels. The\n",
+-"address will probably start with \"http://\" and end in \".jpg\",\n",
++"address will probably start with \"https://\" and end in \".jpg\",\n",
+ "\".png\", or \".gif\".\n\n",
+ 
+ "<b>-- CONFIGURATION TABS --\n\n",
+@@ -138,9 +138,10 @@
+ "local picture file, list of files, or a script, enter the\n",
+ "_full_ filename in the \"Image Source\" box. To watch a webcam\n",
+ "or other online picture, or use an online list, just put its\n",
+-"address (beginning with http:// or ftp://) in the \"Image Source\n",
+-"box. Lists should end in \"-list\" or \".list\". You'll need GNU\n",
+-"wget installed to be able to get files from the internet.\n",
++"address (beginning with https:// or http:// or ftp://) in the\n",
++"\"Image Source box. Lists should end in \"-list\" or \".list\".\n",
++"You'll need GNU wget installed to be able to get files from the\n",
++"internet.\n",
+ "Special case: when this field begins with \"-x\" followed by a\n",
+ "space and some more text, the remaining text is assumed to be a\n",
+ "script or other system command, and the whole path does not\n",
+@@ -1429,9 +1430,9 @@
+   determines what type of source is represented by the given
+   string, according to these rules, checked in order:
+ 
+-  - A source beginning with 'http:' or 'ftp:' and ending in '.list'
++  - A source beginning with 'https:' or 'http:' or 'ftp:' and ending in '.list'
+      is a SOURCE_LISTURL.
+-  - A source beginning with 'http:' or 'ftp:' is a SOURCE_URL.
++  - A source beginning with 'http:' or 'http:' or 'ftp:' is a SOURCE_URL.
+   - A source that begins with '-x' is a SOURCE_SCRIPT.
+   - A source with an extension in IMG_EXTENSIONS is a SOURCE_FILE.
+   - A source that matches a filename that is executable by the user is
+@@ -1455,7 +1456,7 @@
+   if (!words || !words[0]) /* wish I didn't need this */
+     return SOURCE_FILE;
+ 
+-  if (!strncmp (words[0], "http:", 5) || !strncmp (words[0], "ftp:", 4))
++  if (!strncmp (words[0], "https:", 6) || !strncmp (words[0], "http:", 5) || !strncmp (words[0], "ftp:", 4))
+   {
+     if (endswith (words[0], ".list") || endswith (words[0], "-list"))
+     {

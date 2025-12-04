@@ -1,0 +1,15 @@
+Subject: Typo fixes
+Author: Christoph Biedl <debian.axhn@manchmal.in-ulm.de>
+Last-Update: 2022-01-05
+
+--- a/gkrellkam2.c
++++ b/gkrellkam2.c
+@@ -143,7 +143,7 @@
+ "wget installed to be able to get files from the internet.\n",
+ "Special case: when this field begins with \"-x\" followed by a\n",
+ "space and some more text, the remaining text is assumed to be a\n",
+-"script or other system commmand, and the whole path does not\n",
++"script or other system command, and the whole path does not\n",
+ "need to be specified.\n\n",
+ 
+ "<i>Reread source button\n",

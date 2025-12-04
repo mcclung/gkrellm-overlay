@@ -1,0 +1,18 @@
+Subject: Disable fetching images from the web by default
+Author: Christoph Biedl <debian.axhn@manchmal.in-ulm.de>
+Last-Update: 2022-01-05
+Bug-Debian: https://bugs.debian.org/bug=848375
+
+    The site is dead anyway.
+
+--- a/gkrellkam2.c
++++ b/gkrellkam2.c
+@@ -171,7 +171,7 @@
+   PLUGIN_URL );
+ 
+ static const char *default_source[] = {
+-  "http://aggies.usu.edu/webcam/fullsize.jpg",
++  "",
+   "",
+   "",
+   "",

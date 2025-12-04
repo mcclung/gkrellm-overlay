@@ -1,0 +1,19 @@
+Subject: Mask unused variable
+Author: Christoph Biedl <debian.axhn@manchmal.in-ulm.de>
+Date: 2025-09-04
+
+--- a/gkrellkam2.c
++++ b/gkrellkam2.c
+@@ -943,10 +943,11 @@
+ {
+   int code;
+   char c;
++/*
+   KKamSource *ks;
+ 
+   ks = panel_cursource (p);
+-
++*/
+   if (fread (&c, sizeof (char), 1, p->listurl_pipe) < 1)
+   {
+     /* if we get EAGAIN, wait some more */

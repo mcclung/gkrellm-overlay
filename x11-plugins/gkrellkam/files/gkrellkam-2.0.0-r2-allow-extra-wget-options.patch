@@ -1,0 +1,61 @@
+Subject: Support extra options to wget when fetching images
+Author: Christoph Biedl <debian.axhn@manchmal.in-ulm.de>
+Last-Update: 2022-01-05
+Bug-Debian: https://bugs.debian.org/173774
+
+--- a/gkrellkam2.c
++++ b/gkrellkam2.c
+@@ -140,6 +140,8 @@
+ "or other online picture, or use an online list, just put its\n",
+ "address (beginning with https:// or http:// or ftp://) in the\n",
+ "\"Image Source box. Lists should end in \"-list\" or \".list\".\n",
++"Any first space character ends the address. Everything that\n",
++"follows is treated as a parameter to wget.\n",
+ "You'll need GNU wget installed to be able to get files from the\n",
+ "internet.\n",
+ "Special case: when this field begins with \"-x\" followed by a\n",
+@@ -711,10 +713,19 @@
+   }
+   close (tmpfd);
+ 
+-  wget_str = g_strdup_printf ("wget -q %s -O %s \"%s\"",
+-                              wget_opts, tmpfile,
+-                              panel_cursource (p)->img_name);
+-
++  if (strchr(panel_cursource (p)->img_name, ' ')) {
++    gchar *wget_split_str = g_strdup(panel_cursource (p)->img_name);
++    gchar *space = strchr(wget_split_str, ' ');
++    *space = '\0';
++    wget_str = g_strdup_printf ("wget -q %s -O %s \"%s\" %s",
++                                wget_opts, tmpfile,
++                                wget_split_str, space+1);
++    g_free(wget_split_str);
++  } else {
++    wget_str = g_strdup_printf ("wget -q %s -O %s \"%s\"",
++                                wget_opts, tmpfile,
++                                panel_cursource (p)->img_name);
++  }
+   p->cmd_pipe = popen (wget_str, "r");
+   g_free (wget_str);
+   if (p->cmd_pipe == NULL)
+--- a/gkrellkam-list.5
++++ b/gkrellkam-list.5
+@@ -17,7 +17,8 @@
+ image file.
+ .IP \fIurl\fP
+ Type \fIurl\fP is just that; a ftp:// or http:// or https:// URL pointing at an online
+-image file.
++image file. Everything that follows the first space character is treated
++as a parameter to wget.
+ .IP \fIscript\fP
+ Type \fIscript\fP is a system command, executed in a shell by GKrellKam
+ when it's time to get this image. The output of the command is assumed to
+@@ -73,7 +74,7 @@
+ image: /home/paul/pics/mypic1.jpg
+ /home/paul/pics/mypic2.jpg
+ image: /home/paul/pics/mypic3.jpg
+-http://www.usu.edu/webcam/fullsize.jpg
++http://www.usu.edu/webcam/fullsize.jpg --user-agent="not wget"
+ \fB[tab]\fP tooltip: This is the building where I work
+ 
+ image: /home/paul/pics/mypic4.jpg

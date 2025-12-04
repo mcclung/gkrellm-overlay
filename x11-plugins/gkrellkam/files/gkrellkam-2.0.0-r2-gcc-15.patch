@@ -1,0 +1,23 @@
+Subject: Cast function pointers to avoid FTBFS with gcc-15
+Author: Christoph Biedl <debian.axhn@manchmal.in-ulm.de>
+Date: 2025-09-04
+Bug-Debian: https://bugs.debian.org/1096711
+
+--- a/gkrellkam2.c
++++ b/gkrellkam2.c
+@@ -1194,13 +1194,13 @@
+ 
+   gkrellm_gtk_spin_button (vbox, &panels[i].height_spinner,
+                        (gfloat) panels[i].height,
+-                       10.0, 100.0, 1.0, 5.0, 0, 0, cb_height_spinner, &panels[i],
++                       10.0, 100.0, 1.0, 5.0, 0, 0, (void (*)()) cb_height_spinner, &panels[i],
+                        FALSE, _("Height of viewer, in pixels"));
+ 
+   hbox = gtk_hbox_new (FALSE, 0);
+   gkrellm_gtk_spin_button (hbox, &panels[i].boundary_spinner,
+                        (gfloat) panels[i].boundary,
+-                       0.0, 20.0, 1.0, 1.0, 0, 0, cb_boundary_spinner, &panels[i],
++                       0.0, 20.0, 1.0, 1.0, 0, 0, (void (*)()) cb_boundary_spinner, &panels[i],
+                        FALSE, _("Border size"));
+   
+   gkrellm_gtk_check_button (hbox, &panels[i].aspect_box,

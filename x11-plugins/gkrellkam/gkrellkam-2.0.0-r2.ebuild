@@ -24,6 +24,15 @@ BDEPEND="virtual/pkgconfig"
 PATCHES=(
 	"${FILESDIR}"/${P}-makefile.patch
 	"${FILESDIR}"/${P}-r1-pkgconfig.patch
+	"${FILESDIR}"/${P}-r2-typo-fixes.patch
+	"${FILESDIR}"/${P}-r2-disable-default-image-source.patch
+	"${FILESDIR}"/${P}-r2-https-support.patch
+	"${FILESDIR}"/${P}-r2-allow-extra-wget-options.patch
+	"${FILESDIR}"/${P}-r2-mask-unused-variables.patch
+	"${FILESDIR}"/${P}-r2-gcc-15.patch
+	"${FILESDIR}"/${P}-r2-atexit.patch
+	"${FILESDIR}"/${P}-r2-ignore-system-return.patch
+
 )
 
 src_compile() {
