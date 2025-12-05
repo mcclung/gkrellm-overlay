@@ -23,6 +23,7 @@ PATCHES=(
 	"${FILESDIR}"/${P}-makefile.patch
 	"${FILESDIR}"/${P}-r3-pkgconfig.patch
 	"${FILESDIR}"/${P}-r3-include-stringh.patch
+	"${FILESDIR}"/${P}-r4-c23.patch
 )
 
 src_compile() {

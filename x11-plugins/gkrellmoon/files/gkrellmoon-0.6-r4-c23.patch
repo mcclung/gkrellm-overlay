@@ -1,0 +1,100 @@
+diff '--color=auto' -u --recursive gkrellmoon-0.6_orig/CalcEphem.c gkrellmoon-0.6/CalcEphem.c
+--- gkrellmoon-0.6_orig/CalcEphem.c	2002-12-10 22:36:06.000000000 -0500
++++ gkrellmoon-0.6/CalcEphem.c	2025-12-04 21:58:15.013705240 -0500
+@@ -30,14 +30,14 @@
+ 
+ static gint DayofYear(gint year, gint month, gint day)
+ {
+-	gdouble jd();
++	gdouble jd(gint ny, gint nm, gint nd, gdouble UT);
+ 	return ((gint) (jd(year, month, day, 0.0) - jd(year, 1, 0, 0.0)));
+ }
+ 
+ 
+ static gint DayofWeek(gint year, gint month, gint day, gchar dowstr[])
+ {
+-	gdouble JD, A, Afrac, jd();
++	gdouble JD, A, Afrac, jd(gint ny, gint nm, gint nd, gdouble UT);
+ 	gint n, iA;
+ 
+ 	JD = jd(year, month, day, 0.0);
+@@ -192,7 +192,7 @@
+ void CalcEphem(glong date, gdouble UT, CTrans * c)
+ {
+ 	gint year, month, day;
+-	gdouble TU, TU2, TU3, T0, gmst;
++	gdouble TU, TU2, TU3, T0;
+ 	gdouble varep, varpi;
+ 	gdouble eccen, epsilon;
+ 	gdouble days, M, E, nu, lambnew;
+@@ -201,8 +201,8 @@
+ 	gdouble TDT;
+ 	gdouble AGE;
+ 	gdouble LambdaMoon, BetaMoon, R;
+-	gdouble Ta, Tb, Tc, frac();
+-	gdouble SinGlat, CosGlat, SinGlon, CosGlon, Tau, lmst, x, y, z;
++	gdouble Ta, Tb, Tc, frac(gdouble);
++	gdouble SinGlat, CosGlat, Tau, lmst, x, y, z;
+ 	gdouble SinTau, CosTau, SinDec, CosDec;
+ 
+ 	c->UT = UT;
+@@ -235,9 +235,6 @@
+ 
+ 	c->gmst = hour24(T0 + UT * 1.002737909);
+ 
+-	/* convert to radians for ease later on */
+-	gmst = c->gmst * 15.0 * M_PI / 180.0;
+-
+ 	lmst = 24.0 * frac((c->gmst - c->Glon / 15.0) / 24.0);
+ 
+ 	/*
+@@ -339,8 +336,6 @@
+ 	Tau = (15.0 * lmst - RA_Moon) * RadPerDeg;
+ 	CosGlat = cos(c->Glat * RadPerDeg);
+ 	SinGlat = sin(c->Glat * RadPerDeg);
+-	CosGlon = cos(c->Glon * RadPerDeg);
+-	SinGlon = sin(c->Glon * RadPerDeg);
+ 	CosTau = cos(Tau);
+ 	SinTau = sin(Tau);
+ 	SinDec = sin(DEC_Moon * RadPerDeg);
+diff '--color=auto' -u --recursive gkrellmoon-0.6_orig/Moon.c gkrellmoon-0.6/Moon.c
+--- gkrellmoon-0.6_orig/Moon.c	2002-12-10 22:36:06.000000000 -0500
++++ gkrellmoon-0.6/Moon.c	2025-12-04 21:56:13.685252867 -0500
+@@ -380,7 +380,8 @@
+ gdouble NewMoon(gdouble ax, gdouble bx, gdouble cx)
+ {
+ 
+-	gdouble f1, f2, x0, x1, x2, x3, Moon();
++	gdouble f1, f2, x0, x1, x2, x3;
++    gdouble Moon(double,  gdouble *, gdouble *, gdouble *, gdouble *);
+ 	gdouble L, B, Rad, AGE, tol = 1e-7;
+ 
+ 	x0 = ax;
+@@ -433,7 +434,7 @@
+ 
+ 	gdouble L0, L, LS, F, D, H, S, N, DL, CB, L_MOON, B_MOON, V, W, X,
+ 	    Y, Z, RHO;
+-	gdouble frac(), cosEPS, sinEPS, P2, ARC;
++	gdouble frac(gdouble), cosEPS, sinEPS, P2, ARC;
+ 
+ 
+ 	cosEPS = 0.91748;
+diff '--color=auto' -u --recursive gkrellmoon-0.6_orig/MoonRise.c gkrellmoon-0.6/MoonRise.c
+--- gkrellmoon-0.6_orig/MoonRise.c	2002-12-10 22:36:06.000000000 -0500
++++ gkrellmoon-0.6/MoonRise.c	2025-12-04 21:53:29.094997588 -0500
+@@ -64,9 +64,12 @@
+ static gdouble SinH(CTrans * c, gdouble UT)
+ {
+ 
+-	gdouble TU, TU2, TU3, LambdaMoon, BetaMoon, R, AGE, frac(), jd();
+-	gdouble RA_Moon, DEC_Moon, gmst, lmst, Tau, epsilon, Moon();
+-	gdouble angle2pi();
++	gdouble TU, TU2, TU3, LambdaMoon, BetaMoon, R, AGE;
++    gdouble frac(gdouble x);
++    gdouble jd(gint ny, gint nm, gint nd, gdouble UT);
++	gdouble RA_Moon, DEC_Moon, gmst, lmst, Tau, epsilon;
++    gdouble Moon(gdouble T, gdouble * LAMBDA, gdouble * BETA, gdouble * R, gdouble * AGE);
++	gdouble angle2pi(gdouble angle);
+ 
+ 	TU = (jd(c->year, c->month, c->day, UT) - 2451545.0) / 36525.0;
+ 
