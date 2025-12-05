@@ -20,6 +20,7 @@ BDEPEND="virtual/pkgconfig"
 PATCHES=(
 	"${FILESDIR}"/${P}-makefile.patch
 	"${FILESDIR}"/${P}-r1-pkgconfig.patch
+	"${FILESDIR}"/${P}-r2-c23.patch
 )
 
 src_compile() {

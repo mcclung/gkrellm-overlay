@@ -1,0 +1,57 @@
+diff '--color=auto' -u --recursive gkrellmlaunch-0.5_orig/gkrellmlaunch.c gkrellmlaunch-0.5/gkrellmlaunch.c
+--- gkrellmlaunch-0.5_orig/gkrellmlaunch.c	2002-09-26 09:56:06.000000000 -0400
++++ gkrellmlaunch-0.5/gkrellmlaunch.c	2025-12-04 21:01:35.853376413 -0500
+@@ -282,7 +282,7 @@
+   GList     *list;
+   GList     *newList;
+   GkrellmStyle     *style;
+-  GkrellmTextstyle *ts;
++  /* GkrellmTextstyle *ts; */
+   GkrellmTextstyle *ts_alt;
+ 
+   if (listModified)
+@@ -348,7 +348,7 @@
+      * First make sure we have the styles set up.
+      */
+     style = gkrellm_meter_style (style_id);
+-    ts = gkrellm_meter_textstyle (style_id);
++    /* ts = gkrellm_meter_textstyle (style_id); */
+     ts_alt = gkrellm_meter_alt_textstyle (style_id);
+      
+     for (i = 0, list = launcherList; list; i += 1, list = list->next)
+@@ -371,7 +371,7 @@
+                                launcher->label, 1);
+                                
+       gkrellm_put_decal_in_meter_button (launcher->panel, launcher->decal,
+-                                         buttonPress,
++                                         (void (*)(void))buttonPress,
+                                          GINT_TO_POINTER (i), NULL);
+       /*
+        * Connect our panel to the expose event to allow it to be drawn in 
+@@ -806,7 +806,7 @@
+   GLauncher *launcher;
+   GList     *list;
+   GkrellmStyle     *style;
+-  GkrellmTextstyle *ts;
++  /* GkrellmTextstyle *ts; */
+   GkrellmTextstyle *ts_alt;
+ 
+   launcherVbox = vbox;
+@@ -829,7 +829,7 @@
+    * the ts font is larger than the ts_alt font, but again you can be
+    * overridden by the theme designer.
+    */
+-  ts = gkrellm_meter_textstyle (style_id);
++  /* ts = gkrellm_meter_textstyle (style_id); */
+   ts_alt = gkrellm_meter_alt_textstyle (style_id);
+ 
+   /* 
+@@ -855,7 +855,7 @@
+     gkrellm_draw_decal_text (launcher->panel, launcher->decal, 
+                               launcher->label,1);
+     gkrellm_put_decal_in_meter_button (launcher->panel, launcher->decal, 
+-                                       buttonPress, 
++                                       (void (*)(void))buttonPress, 
+                                        GINT_TO_POINTER (i), NULL);
+   }                                            
+ 
